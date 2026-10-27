@@ -280,7 +280,7 @@ const DEFAULT_BARGAIN_RANGES = [
       display: inline-block; 
       width: 100%;
       height: 100%; 
-      color: #fff; 
+      color: #00f200; 
       padding: 3%;
       resize: none;
   `
