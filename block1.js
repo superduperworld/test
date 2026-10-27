@@ -52,8 +52,8 @@ Jan Mankell`
 // Tack för att ni tar er tid att överväga vårt erbjudande. Vi ser fram emot att få höra från er och hoppas på en positiv respons!
 
 // Med vänliga hälsningar Neo D,
-// BilBuffén AB                                                                                                                      
-// Spångavägen 308 
+// BilBuffén AB
+// Spångavägen 308
 // 16346 Spånga`
 
 const MESSAGE_3 = (price) => `Hej och hoppas allt väl :)
@@ -67,7 +67,6 @@ Ursäkta mitt lägre bud, men hoppas ni kan överväga det. Jag ser fram emot er
 
 Vänliga hälsningar,
 Jan M`
-
 
 const SUPPORTED_USERS = [
   'andreaslarson@live.se',
@@ -96,17 +95,12 @@ const DEFAULT_BARGAIN_RANGES = [
 
 ;(async function run() {
   try {
-
-
     const LOCAL_STORAGE_KEY = 'crippo_repliedAdIds'
     const LIMIT_PER_RUN = 59
 
     if (localStorage.getItem(LOCAL_STORAGE_KEY) === null) {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify([]))
     }
-
-
-   
 
     const sleep = async (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -141,22 +135,17 @@ const DEFAULT_BARGAIN_RANGES = [
 
     const typeTextToInput = async (inputElement, text, duration = 2000, extraAttempts = 3) => {
       for (let index = 0; index < text.length; index++) {
-
         const nextValue = inputElement.value + text.charAt(index)
 
-  const setter = Object.getOwnPropertyDescriptor(
-    HTMLTextAreaElement.prototype,
-    "value"
-  ).set;
+        const setter = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set
 
-  inputElement.focus();
-  setter.call(inputElement, nextValue);
-  inputElement.dispatchEvent(new Event("input", { bubbles: true }));
-  inputElement.dispatchEvent(new Event("change", { bubbles: true }));
+        inputElement.focus()
+        setter.call(inputElement, nextValue)
+        inputElement.dispatchEvent(new Event('input', { bubbles: true }))
+        inputElement.dispatchEvent(new Event('change', { bubbles: true }))
 
-      
         inputElement.scrollTo(0, inputElement.scrollHeight)
-        await sleep(duration / text.length)
+        await sleep(10)
       }
 
       if (inputElement.value !== text) {
@@ -181,7 +170,8 @@ const DEFAULT_BARGAIN_RANGES = [
       return
     }
 
-    const apiFilterNumber = prompt(`Vilket filter ska användas? (ange nummer)
+    const apiFilterNumber = prompt(
+      `Vilket filter ska användas? (ange nummer)
       
       1. Gamla 1: Alla bilar - hela Sverige  
       2. Gamla 2: Suvar & 7-sits bilar - hela Sverige
@@ -192,7 +182,9 @@ const DEFAULT_BARGAIN_RANGES = [
       7. Nya 4: Yrkesbilar - POLEN
       8. Nya 5: Manuellt valda lättsålda märken - POLEN
 
-      `, 1)
+      `,
+      1,
+    )
 
     const apiFilter = API_FILTERS[apiFilterNumber - 1]
 
@@ -223,14 +215,14 @@ const DEFAULT_BARGAIN_RANGES = [
     }
     document.querySelector('body').style = 'background: #000; overflow: hidden'
 
-const wrapper = document.createElement("div");
-wrapper.id = "wrapper";
-document.body.prepend(wrapper);
+    const wrapper = document.createElement('div')
+    wrapper.id = 'wrapper'
+    document.body.prepend(wrapper)
 
-while (wrapper.nextSibling) {
-  wrapper.appendChild(wrapper.nextSibling);
-}
-      
+    while (wrapper.nextSibling) {
+      wrapper.appendChild(wrapper.nextSibling)
+    }
+
     document.querySelector('#wrapper').style = 'opacity: 0.3; filter: blur(4px);'
 
     const popupElement = document.createElement('div')
@@ -318,7 +310,6 @@ while (wrapper.nextSibling) {
 👋 Hej, tänd ciggen nu så kör vi...`,
     )
 
-
     await sleep(1000)
 
     consoleElement.style.width = 'calc(40% - 20px)'
@@ -327,7 +318,8 @@ while (wrapper.nextSibling) {
 
     await writeToConsole(`\n\n⏳ Hämtar annonserna...`)
 
-    const baseApiUrl = 'https://www.blocket.se/mobility/search/api/search/SEARCH_ID_CAR_USED?rows=20&dealer_segment=3&'
+    const baseApiUrl =
+      'https://www.blocket.se/mobility/search/api/search/SEARCH_ID_CAR_USED?rows=20&dealer_segment=3&'
 
     const firstPage = await (
       await fetch(
@@ -344,7 +336,7 @@ while (wrapper.nextSibling) {
           baseApiUrl +
             //apiFilter +
             '&page=' +
-            ( i),
+            i,
         ),
       ),
     ).then(async (responses) => Promise.all(responses.map((response) => response.json())))
@@ -367,8 +359,7 @@ while (wrapper.nextSibling) {
       try {
         const adId = ad.id
         const adUrl = ad.canonical_url
-        const adNewMessageUrl = "/messages/new/" + adId
-      
+        const adNewMessageUrl = '/messages/new/' + adId
 
         await writeToConsole(`⏳ Laddar annons ${index + 1}/${ads.length}: ${adUrl}`)
 
@@ -377,11 +368,9 @@ while (wrapper.nextSibling) {
 
           await sleep(1500)
 
-
           iframeElement.src = adNewMessageUrl
 
           await writeToConsole('\n\n🖱️ Klickar på skicka meddelande knappen')
-  
 
           await sleep(1000)
 
@@ -393,44 +382,36 @@ while (wrapper.nextSibling) {
             await sleep(1000)
           }
 
-     
-
           await sleep(1000)
 
           await writeToConsole('\n\n📝 Skriver meddelande...')
 
-      
           const price = ad.price.amount
-
 
           const givenPrice = calculateBargainPrice(price, bargainRanges)
           const msg = (() => {
-console.log("apiFilterNumber", apiFilterNumber)
-            switch(apiFilterNumber) {
-              case "1":
-              case "2":
-              case "3":
+            console.log('apiFilterNumber', apiFilterNumber)
+            switch (apiFilterNumber) {
+              case '1':
+              case '2':
+              case '3':
                 return MESSAGE_1(givenPrice)
-              case "4":
-              case "5":
-              case "6":
-              case "7":
-              case "8":
+              case '4':
+              case '5':
+              case '6':
+              case '7':
+              case '8':
                 return MESSAGE_3(givenPrice)
               default:
-                throw Error("JÄVLA SKIT!")
+                throw Error('JÄVLA SKIT!')
             }
-            
-          })() 
+          })()
 
-       
-    
-        const messageInputElement = iframeElement.contentDocument.querySelector('textarea[data-testid="text-area"]')
+          const messageInputElement = iframeElement.contentDocument.querySelector(
+            'textarea[data-testid="text-area"]',
+          )
 
-  
-         messageInputElement.style.height = '300px'
-
-   
+          messageInputElement.style.height = '300px'
 
           await typeTextToInput(messageInputElement, msg)
 
@@ -438,10 +419,8 @@ console.log("apiFilterNumber", apiFilterNumber)
 
           await sleep(500)
 
-    
-          if ("user" !== 'andreaslarson@live.se') {
-          
-            console.log("skicka här")
+          if ('user' !== 'andreaslarson@live.se') {
+            console.log('skicka här')
           }
 
           localStorage.setItem(
@@ -491,9 +470,6 @@ console.log("apiFilterNumber", apiFilterNumber)
     console.error('Failed: ', e)
   }
 })()
-
-
-
 
 // (async () => {
 //   const selector =
