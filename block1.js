@@ -133,7 +133,7 @@ const DEFAULT_BARGAIN_RANGES = [
         .map((range) => (price >= range.min && price <= range.max ? range.bargain : undefined))
         .filter(Boolean)[0] || 1)
 
-    const typeTextToInput = async (inputElement, text, duration = 2000, extraAttempts = 3) => {
+    const typeTextToInput = async (inputElement, text, extraAttempts = 3) => {
       for (let index = 0; index < text.length; index++) {
         const nextValue = inputElement.value + text.charAt(index)
 
@@ -145,13 +145,13 @@ const DEFAULT_BARGAIN_RANGES = [
         inputElement.dispatchEvent(new Event('change', { bubbles: true }))
 
         inputElement.scrollTo(0, inputElement.scrollHeight)
-        await sleep(10)
+        await sleep(5)
       }
 
       if (inputElement.value !== text) {
         if (extraAttempts > 0) {
           inputElement.value = ''
-          await typeTextToInput(inputElement, text, duration, extraAttempts - 1)
+          await typeTextToInput(inputElement, text, extraAttempts - 1)
         } else {
           throw new Error('Meddelandet skrevs inte korrekt!')
         }
@@ -291,7 +291,7 @@ const DEFAULT_BARGAIN_RANGES = [
       for (let index = 0; index < text.length; index++) {
         consoleElement.value += text.charAt(index)
         consoleElement.scrollTop = consoleElement.scrollHeight
-        await sleep(10)
+        await sleep(5)
       }
     }
 
