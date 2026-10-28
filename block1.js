@@ -66,6 +66,7 @@ const API_FILTERS = [
 const MESSAGE_1 = (price) => `Hej och hoppas allt väl :)
 
 Mitt namn är Jan och är intresserad av er bil. Den ser supertrevlig ut, precis en sådan jag letar efter.
+
 Priset verkar rimligt, dock är min budget lite begränsad och undrar om ni skulle kunna tänka er godta ett bud på ${price} kr?
 
 Om ja, så garanterar jag en smidig och krångelfri affär redan idag. Jag kan även betala en handpenning för att visa att jag är seriös.
