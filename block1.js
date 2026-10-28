@@ -1,4 +1,4 @@
-alert('version 2.2 (sexual page picker)')
+alert('version 2.3 (sexual page picker)')
 
 const API_FILTERS = [
   {
