@@ -1,4 +1,4 @@
-alert('version 2.0 (9mm)')
+alert('version 2.1 (ocd fix)')
 
 const API_FILTERS = [
   {
@@ -66,6 +66,7 @@ const API_FILTERS = [
 const MESSAGE_1 = (price) => `Hej och hoppas allt väl :)
 
 Mitt namn är Jan och är intresserad av er bil. Den ser supertrevlig ut, precis en sådan jag letar efter.
+
 Priset verkar rimligt, dock är min budget lite begränsad och undrar om ni skulle kunna tänka er godta ett bud på ${price} kr?
 
 Om ja, så garanterar jag en smidig och krångelfri affär redan idag. Jag kan även betala en handpenning för att visa att jag är seriös.
@@ -482,53 +483,3 @@ ${API_FILTERS.map((filter) => `${filter.id}. ${filter.name}`).join('\n')}
     console.error('Failed: ', e)
   }
 })()
-
-// (async () => {
-//   const selector =
-//     'textarea[aria-label="Skriv ditt meddelande och tryck på Retur för att skicka"]';
-
-//   const field = document.querySelector(selector);
-
-//   if (!field) {
-//     console.error("Hittade inte Blockets meddelandefält.");
-//     return;
-//   }
-
-//   // Fyll i meddelandet via webbläsarens inbyggda setter.
-//   const setter = Object.getOwnPropertyDescriptor(
-//     HTMLTextAreaElement.prototype,
-//     "value"
-//   ).set;
-
-//   field.focus();
-//   setter.call(field, "hej");
-//   field.dispatchEvent(new Event("input", { bubbles: true }));
-//   field.dispatchEvent(new Event("change", { bubbles: true }));
-
-//   // Kontrollera att texten faktiskt finns i fältet.
-//   if (field.value !== "hej") {
-//     console.error("Kunde inte fylla i meddelandet.");
-//     return;
-//   }
-
-//   // Skicka endast efter uttrycklig bekräftelse.
-//   if (!confirm('Skicka meddelandet "hej" till säljaren på Blocket?')) {
-//     console.log("Avbrutet. Inget meddelande skickades.");
-//     return;
-//   }
-
-//   // Använd Enter, vilket fältets instruktion anger som skickkommando.
-//   field.focus();
-//   field.dispatchEvent(new KeyboardEvent("keydown", {
-//     key: "Enter",
-//     code: "Enter",
-//     keyCode: 13,
-//     which: 13,
-//     bubbles: true,
-//     cancelable: true
-//   }));
-
-//   console.log(
-//     "Enter skickades till fältet. Kontrollera konversationen för att se om meddelandet skickades."
-//   );
-// })();
