@@ -1,4 +1,4 @@
-alert('version 2.1 (ocd fix)')
+alert('version 2.3 (sexual page picker)')
 
 const API_FILTERS = [
   {
@@ -182,13 +182,10 @@ const DIVIDER = '\n\n=====================================\n\n'
       await sleep(100)
     }
 
-    const searchResultsType = prompt(
-      'Vilka sökresultat ska den välja? Ange SENASTE eller MITTEN!',
-      'MITTEN',
-    )
+    const startPage = parseInt(prompt('Vilken sida vill du börja från?', 20))
 
-    if (!['SENASTE', 'MITTEN'].includes(searchResultsType)) {
-      alert('Måste vara SENASTE eller MITTEN! Ladda om sidan och försök igen!')
+    if (isNaN(startPage)) {
+      alert('Sidan måste vara ett nummer! Mhmhmhmhmh d tämmer')
       return
     }
 
@@ -337,14 +334,7 @@ ${API_FILTERS.map((filter) => `${filter.id}. ${filter.name}`).join('\n')}
 
     const middlePages = await Promise.all(
       [1, 2].map((i) =>
-        fetch(
-          baseApiUrl +
-            apiFilter +
-            '&rows=' +
-            PAGE_SIZE +
-            '&page=' +
-            (i + (searchResultsType === 'MITTEN' ? 20 : 0)),
-        ),
+        fetch(baseApiUrl + apiFilter + '&rows=' + PAGE_SIZE + '&page=' + (startPage + i)),
       ),
     ).then(async (responses) => Promise.all(responses.map((response) => response.json())))
 
@@ -424,7 +414,7 @@ ${API_FILTERS.map((filter) => `${filter.id}. ${filter.name}`).join('\n')}
 
           await sleep(500)
 
-          if ('user' !== 'andreaslarson@live.se') {
+          if (true) {
             messageInputElement.focus()
             messageInputElement.dispatchEvent(
               new KeyboardEvent('keydown', {
