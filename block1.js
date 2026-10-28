@@ -1,4 +1,4 @@
-alert('version 2.0 (9mm)')
+alert('version 2.1 (ocd fix)')
 
 const API_FILTERS = [
   {
