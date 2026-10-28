@@ -1,4 +1,4 @@
-alert('version 1.5 (x-haaaaaaaKT)')
+alert('version 2.0 (9mm)')
 
 const API_FILTERS = [
   {
