@@ -112,6 +112,8 @@ const DEFAULT_BARGAIN_RANGES = [
   { min: 120000, max: 9999999, bargain: 23000 },
 ]
 
+const DIVIDER = '\n\n=====================================\n\n'
+
 ;(async function run() {
   try {
     const LOCAL_STORAGE_KEY = 'crippo_repliedAdIds'
@@ -192,7 +194,7 @@ const DEFAULT_BARGAIN_RANGES = [
     const apiFilterNumber = prompt(
       `Vilket filter ska användas? (ange nummer)
       
-    ${API_FILTERS.map((filter) => `${filter.id}. ${filter.name}`).join('\n')}
+${API_FILTERS.map((filter) => `${filter.id}. ${filter.name}`).join('\n')}
 
       `,
       1,
@@ -328,18 +330,26 @@ const DEFAULT_BARGAIN_RANGES = [
 
     await writeToConsole(`\n\n⏳ Hämtar annonserna...`)
 
-    const baseApiUrl =
-      'https://www.blocket.se/mobility/search/api/search/SEARCH_ID_CAR_USED?rows=20&'
+    const PAGE_SIZE = 50
 
-    const firstPage = await (await fetch(baseApiUrl + apiFilter + '&page=' + 1)).json()
+    const baseApiUrl = 'https://www.blocket.se/mobility/search/api/search/SEARCH_ID_CAR_USED?'
 
     const middlePages = await Promise.all(
-      [1, 2, 3, 4, 5].map((i) => fetch(baseApiUrl + apiFilter + '&page=' + i)),
+      [1, 2].map((i) =>
+        fetch(
+          baseApiUrl +
+            apiFilter +
+            '&rows=' +
+            PAGE_SIZE +
+            '&page=' +
+            (i + (searchResultsType === 'MITTEN' ? 20 : 0)),
+        ),
+      ),
     ).then(async (responses) => Promise.all(responses.map((response) => response.json())))
 
     const ads = middlePages.flatMap((d) => d.docs)
 
-    await writeToConsole('\n\n=====================================\n\n')
+    await writeToConsole(DIVIDER)
 
     let sentThisRun = 0
 
@@ -407,8 +417,6 @@ const DEFAULT_BARGAIN_RANGES = [
             'textarea[data-testid="text-area"]',
           )
 
-          messageInputElement.style.height = '300px'
-
           await typeTextToInput(messageInputElement, msg)
 
           await writeToConsole('\n\n⏳ Skickar meddelande...')
@@ -416,7 +424,17 @@ const DEFAULT_BARGAIN_RANGES = [
           await sleep(500)
 
           if ('user' !== 'andreaslarson@live.se') {
-            console.log('skicka här')
+            messageInputElement.focus()
+            messageInputElement.dispatchEvent(
+              new KeyboardEvent('keydown', {
+                key: 'Enter',
+                code: 'Enter',
+                keyCode: 13,
+                which: 13,
+                bubbles: true,
+                cancelable: true,
+              }),
+            )
           }
 
           localStorage.setItem(
@@ -427,12 +445,11 @@ const DEFAULT_BARGAIN_RANGES = [
           sentThisRun++
 
           const minutesToWait = ((items) => items[Math.floor(Math.random() * items.length)])([
-            0, 9, 1.32, 1.77, 2.8,
+            0.7, 1.32, 1.77, 2.8,
           ])
           const minutesToWaitInMs = minutesToWait * 60000
 
           await writeToConsole(`\n\n😁 Meddelande ${sentThisRun} av ${LIMIT_PER_RUN} skickat!`)
-          messageInputElement.style.height = '50px'
 
           await sleep(1000)
 
@@ -447,14 +464,14 @@ const DEFAULT_BARGAIN_RANGES = [
           )
         }
 
-        await writeToConsole('\n\n=====================================\n\n')
+        await writeToConsole(DIVIDER)
 
         await sleep(1000)
       } catch (e) {
         await writeToConsole(
           `\n\n😱 Någonting gick åt helvete, provar nästa annons. Felmeddelande: ${e}`,
         )
-        await writeToConsole('\n\n=====================================\n\n')
+        await writeToConsole(DIVIDER)
       }
     }
 
