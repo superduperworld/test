@@ -414,7 +414,7 @@ ${API_FILTERS.map((filter) => `${filter.id}. ${filter.name}`).join('\n')}
 
           await sleep(500)
 
-          if (false) {
+          if (true) {
             messageInputElement.focus()
             messageInputElement.dispatchEvent(
               new KeyboardEvent('keydown', {
